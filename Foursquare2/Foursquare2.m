@@ -25,6 +25,8 @@ static NSString const * kFOURSQUARE_CALLBACK_URL = @"FOURSQUARE_CALLBACK_URL";
 
 static NSString const * kFOURSQUARE_ACCESS_TOKEN = @"FOURSQUARE_ACCESS_TOKEN";
 
+static NSString const * kFOURSQUARE_NEW_BASE_URL = @"FOURSQUARE_NEW_BASE_URL";
+
 NSString * const kFoursquare2NativeAuthErrorDomain = @"fs.native.auth";
 NSString * const kFoursquare2ErrorDomain = @"kFoursquare2ErrorDomain";
 NSString * const kFoursquare2DidRemoveAccessTokenNotification = @"kFoursquare2DidRemoveAccessTokenNotification";
@@ -74,10 +76,12 @@ static NSMutableDictionary *attributes;
 
 + (void)setupFoursquareWithClientId:(NSString *)clientId
                              secret:(NSString *)secret
-                        callbackURL:(NSString *)callbackURL {
+                        callbackURL:(NSString *)callbackURL
+                         newBaseURL:(NSString *)newBaseURL {
     [self classAttributes][kFOURSQUARE_CLIET_ID] = clientId;
     [self classAttributes][kFOURSQUARE_OAUTH_SECRET] = secret;
     [self classAttributes][kFOURSQUARE_CALLBACK_URL] = callbackURL;
+    [self classAttributes][kFOURSQUARE_NEW_BASE_URL] = newBaseURL;
     
     //moving access token from NSUserDefault into keychain.
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -1345,10 +1349,10 @@ static NSMutableDictionary *attributes;
 
 + (NSURL *)constructURLWithPath:(NSString *)path
                      parameters:(NSDictionary *)parameters {
-    NSMutableString *parametersString = [NSMutableString stringWithString: kFOURSQUARE_BASE_URL];
+    NSDictionary *classAttributes = [self classAttributes];
+    NSMutableString *parametersString = [NSMutableString stringWithString: classAttributes[kFOURSQUARE_NEW_BASE_URL]];
     
     [parametersString appendString:path];
-    NSDictionary *classAttributes = [self classAttributes];
     NSString *key = classAttributes[kFOURSQUARE_CLIET_ID];
     NSString *secret = classAttributes[kFOURSQUARE_OAUTH_SECRET];
     [parametersString appendFormat:@"?client_id=%@",key];

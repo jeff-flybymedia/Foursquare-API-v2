@@ -139,7 +139,8 @@ FOUNDATION_EXPORT NSString * const kFoursquare2DidRemoveAccessTokenNotification;
  */
 + (void)setupFoursquareWithClientId:(NSString *)clientId
                              secret:(NSString *)secret
-                        callbackURL:(NSString *)callbackURL;
+                        callbackURL:(NSString *)callbackURL
+                         newBaseURL:(NSString *)newBaseURL;
 /**
  @return YES if user authorised, otherwise NO.
  */
